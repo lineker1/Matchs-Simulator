@@ -1,7 +1,6 @@
 package me.dio.simulator.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,17 +13,25 @@ import java.util.List;
 
 import me.dio.simulator.databinding.MatchItemBinding;
 import me.dio.simulator.domain.Match;
-import me.dio.simulator.ui.DetailAcitivity;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
 
     private final List<Match> matches;
 
-    public MatchesAdapter(List<Match> matches) { this.matches = matches; }
+    public MatchesAdapter(List<Match> matches) {
+        this.matches = matches;
+    }
 
     public List<Match> getMatches() {
         return matches;
     }
+
+    public interface MatchesClick {
+        void onclick(Match match);
+    }
+
+    public MatchesClick listener;
+
 
     @NonNull
     @Override
@@ -51,11 +58,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             holder.binding.txtVisitantTeamScore.setText(String.valueOf(match.getVisitantTeam().getScore()));
         }
 
-        holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, DetailAcitivity.class);
-            intent.putExtra(DetailAcitivity.Extras.MATCH, match);
-            context.startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(view -> listener.onclick(match));
     }
 
     @Override

@@ -10,7 +10,7 @@ data class Match(
 
     @SerializedName("descricao")
     val descricao: String,
-    @SerializedName("Local")
+    @SerializedName("local")
     val place: Place,
     @SerializedName("mandante")
     val homeTeam: Team,

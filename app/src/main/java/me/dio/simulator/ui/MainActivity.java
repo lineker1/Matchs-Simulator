@@ -2,6 +2,7 @@ package me.dio.simulator.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         binding.rvMatches.setHasFixedSize(true);
         binding.rvMatches.setLayoutManager(new LinearLayoutManager(this));
         findMatchesFrontApi();
+
     }
 
 
@@ -98,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
                     List<Match> matches = response.body();
                     matchesAdapter = new MatchesAdapter(matches);
                     binding.rvMatches.setAdapter(matchesAdapter);
+                    matchesAdapter.listener = match -> {
+                        Intent intent = new Intent(MainActivity.this, DetailAcitivity.class);
+                        intent.putExtra(DetailAcitivity.Extras.MATCH, match);
+                        startActivity(intent);
+                    };
                 } else {
                     showErrorMessage();
                 }

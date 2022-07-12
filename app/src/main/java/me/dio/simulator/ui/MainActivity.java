@@ -3,12 +3,11 @@ package me.dio.simulator.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -72,20 +71,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupFloatingActionButton() {
         Random random = new Random();
-        binding.fabSimulate.setOnClickListener(view -> {
-            view.animate().rotationBy(360).setDuration(500).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    for (int i = 0; i < matchesAdapter.getItemCount(); i++) {
-                        Match match = matchesAdapter.getMatches().get(i);
-                        match.getHomeTeam().setScore(random.nextInt(match.getHomeTeam().getStars() + 1));
-                        match.getVisitantTeam().setScore(random.nextInt(match.getVisitantTeam().getStars() + 1));
-                        matchesAdapter.notifyItemChanged(i);
+        binding.fabSimulate.setOnClickListener(view -> view.animate().rotationBy(360).setDuration(500).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                for (int i = 0; i < matchesAdapter.getItemCount(); i++) {
+                    Match match = matchesAdapter.getMatches().get(i);
+                    match.getHomeTeam().setScore(random.nextInt(match.getHomeTeam().getStars() + 1));
+                    match.getVisitantTeam().setScore(random.nextInt(match.getVisitantTeam().getStars() + 1));
+                    matchesAdapter.notifyItemChanged(i);
 
-                    }
                 }
-            });
-        });
+            }
+        }));
 
 
     }
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             @Override
-            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
+            public void onResponse(@NonNull Call<List<Match>> call, @NonNull Response<List<Match>> response) {
                 if (response.isSuccessful()) {
                     List<Match> matches = response.body();
                     matchesAdapter = new MatchesAdapter(matches);
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Match>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Match>> call, @NonNull Throwable t) {
                 showErrorMessage();
             }
         });

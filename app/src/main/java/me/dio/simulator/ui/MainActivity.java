@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private MatchesApi matchesApi;
-    private MatchesAdapter matchesAdapter;
+    private MatchesAdapter matchesAdapter = new MatchesAdapter(Collections.emptyList());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupMatchesList() {
         binding.rvMatches.setHasFixedSize(true);
         binding.rvMatches.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvMatches.setAdapter(matchesAdapter);
         findMatchesFrontApi();
 
     }
@@ -81,12 +83,9 @@ public class MainActivity extends AppCompatActivity {
                     match.getHomeTeam().setScore(random.nextInt(match.getHomeTeam().getStars() + 1));
                     match.getVisitantTeam().setScore(random.nextInt(match.getVisitantTeam().getStars() + 1));
                     matchesAdapter.notifyItemChanged(i);
-
                 }
             }
         }));
-
-
     }
 
     private void findMatchesFrontApi() {
